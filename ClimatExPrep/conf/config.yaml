@@ -8,51 +8,88 @@
 # dataset respectively with hr_only or lr_only: true
 # The same logic above applies for the dimensions, dims, and coordinates, coords.
 
-hr_grid_ref_path: "/home/nannau/climatex/ClimatExPrep/ClimatExPrep/data/hr_ref.nc"
+hr_grid_ref_path: "/Volumes/LaCie/nonan/hs/hs_nonan_199501_waves_r1i1p2f1_CanESM5orig_hist_small3.nc"
 
 vars:
-  pr:
+  hs:
     hr:
-      path: /home/nannau/climatex/data/fire_vars/hr/PREC/*.nc
-      is_west_negative: true
-    lr:
-      path: /home/nannau/climatex/data/fire_vars/lr/pr_hourly.nc
+      path: /Volumes/LaCie/nonan/hs/*small3.nc
       is_west_negative: false
-    output_path: /home/nannau/climatex/data/fire_vars/proc/
-    alternative_names: ["PREC"]
+    lr:
+      path: /Volumes/LaCie/nonan/hs/*small3.nc
+      is_west_negative: false
+    output_path: /Volumes/LaCie/2years_smallest_coarsened_southatlantic/
+    alternative_names: ["hs","SWH"]
     standardize: true
+    hr_only: true 
 
-  # uas:
-  #   hr:
-  #     path: /home/nannau/jabbar/data/train_netcdf/hr/U10/*.nc
-  #     is_west_negative: true
-  #   lr:
-  #     path: /home/nannau/jabbar/data/train_netcdf/lr/uas_sliced_cropped.nc
-  #     is_west_negative: false
-  #   output_path: /home/nannau/gom/proc/
-  #   alternative_names: ["U10", "u10", "uas"]
-  #   standardize: true
+  uas:
+    hr:
+      path: /Volumes/LaCie/nonan/uas/*small3.nc
+      is_west_negative: false
+    lr:
+      path: /Volumes/LaCie/nonan/uas/*small3.nc
+      is_west_negative: false
+    output_path: /Volumes/LaCie/2years_smallest_coarsened_southatlantic/
+    alternative_names: ["U10", "u10", "uas","uwnd"]
+    standardize: true
+    lr_only: true
 
-  # vas:
-  #   hr:
-  #     path: /home/nannau/jabbar/data/train_netcdf/hr/V10/*.nc
-  #     is_west_negative: true
-  #   lr:
-  #     path: /home/nannau/jabbar/data/train_netcdf/lr/vas_sliced_cropped.nc
-  #     is_west_negative: false
-  #   output_path: /home/nannau/gom/proc/
-  #   alternative_names: ["V10", "v10", "vas"]
-  #   standardize: true
+  vas:
+    hr:
+      path: /Volumes/LaCie/nonan/vas/*small3.nc
+      is_west_negative: false
+    lr:
+      path: /Volumes/LaCie/nonan/vas/*small3.nc
+      is_west_negative: false
+    output_path: /Volumes/LaCie/2years_smallest_coarsened_southatlantic/
+    alternative_names: ["V10", "v10", "vas","vwnd"]
+    standardize: true
+    lr_only: true
 
-  # tas:
+#  ice:
+#    hr:
+#      path: /Volumes/LaCie/nonan/ice/*smallest.nc
+#      is_west_negative: false
+#    lr:
+#      path: /Volumes/LaCie/nonan/ice/*smallest.nc
+#      is_west_negative: false
+#    output_path: /Volumes/LaCie/2year_coarsened_cropped/
+#    alternative_names: ["ice","SIC"]
+#    standardize: true
+#
+#  t0m1:
+#    hr:
+#      path: /Volumes/LaCie/nonan/t0m1/*smallest.nc
+#      is_west_negative: false
+#    lr:
+#      path: /Volumes/LaCie/nonan/t0m1/*smallest.nc
+#      is_west_negative: false
+#    output_path: /Volumes/LaCie/2year_coarsened_cropped/
+#    alternative_names: ["t0m1"]
+#    standardize: true
+#
+#  dir:
+#    hr:
+#      path: /Volumes/LaCie/nonan/dir/*smallest.nc
+#      is_west_negative: false
+#    lr:
+#      path: /Volumes/LaCie/nonan/dir/*smallest.nc
+#      is_west_negative: false
+#    output_path: /Volumes/LaCie/2year_coarsened_cropped/
+#    alternative_names: ["dir"]
+#    standardize: true
+#
+
+  # MAPSTA:
   #   hr:
-  #     path: /home/nannau/jabbar/data/train_netcdf/hr/T2/*.nc
-  #     is_west_negative: true
-  #   lr:
-  #     path: /home/nannau/jabbar/data/train_netcdf/lr/tas_sliced_cropped.nc
+  #     path: /Volumes/LaCie/nonan/MAPSTA/*small3.nc
   #     is_west_negative: false
-  #   output_path: /home/nannau/gom/proc/
-  #   alternative_names: ["T2", "surface temperature"]
+  #   lr:
+  #     path: /Volumes/LaCie/nonan/MAPSTA/*small3.nc
+  #     is_west_negative: false
+  #   output_path: /Volumes/LaCie/2years_smallest_coarsened_southatlantic/
+  #   alternative_names: ["MAPSTA"]
   #   standardize: true
 
 dims:
@@ -75,36 +112,36 @@ time:
   # Crop to the dataset with the shortest run
   # this defines the full dataset from which to subset
   full:
-    start: "20001001T06:00:00"
-    end: "20150928T12:00:00"
+    start: "19950101T00:00:00"
+    end: "19961231T21:00:00"
 
   # use this to select which years to reserve for testing
   # the remaining years in full will be used for training
-  test_years: [2000, 2009, 2014]
+  test_years: []
 
 # sets the scale factor and index slices of the rotated coordinates
 spatial:
   scale_factor: 8
   x:
-    first_index: 110
-    last_index: 622
+    first_index: 0
+    last_index: 128
   y:
-    first_index: 20
-    last_index: 532
+    first_index: 0
+    last_index: 128
 
 # xarray netcdf engine
-engine: h5netcdf
+engine: netcdf4
 steps_per_file: 32
 randomize: true
 
 # dask client parameters
 compute:
-  threads_per_worker: 24
-  memory_limit: "60GB"
+  threads_per_worker: 1
+  memory_limit: "8GB"
   dashboard_address: 8787
 
 # define torch
 loader:
-  batch_size: 64
+  batch_size: 50
   randomize: true
   seed: 0

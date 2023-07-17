@@ -63,9 +63,9 @@ def start(cfg) -> None:
             hr = slice_time(hr, cfg.time.full.start, cfg.time.full.end)
 
             # Crop the field to the given size.
-            logging.info("Cropping field...")
-            hr = crop_field(hr, cfg.spatial.scale_factor, cfg.spatial.x, cfg.spatial.y)
-            hr = hr.drop(["lat", "lon"])
+            # logging.info("Cropping field...")
+            # hr = crop_field(hr, cfg.spatial.scale_factor, cfg.spatial.x, cfg.spatial.y)
+            # hr = hr.drop(["lat", "lon"])
 
             if var == "pr":
                 logging.info("Apply log transform to hr...")

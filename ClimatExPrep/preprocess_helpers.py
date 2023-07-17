@@ -160,14 +160,14 @@ def crop_field(ds, scale_factor, x, y):
     )
 
     assert (
-        x.last_index - x.first_index
-    ) % scale_factor == 0, "x dimension not divisible by scale factor, check config"
+                   x.last_index - x.first_index
+           ) % scale_factor == 0, "x dimension not divisible by scale factor, check config"
     assert (
-        y.last_index - y.first_index
-    ) % scale_factor == 0, "y dimension not divisible by scale factor, check config"
+                   y.last_index - y.first_index
+           ) % scale_factor == 0, "y dimension not divisible by scale factor, check config"
 
     assert (
-        ds.rlon.size == ds.rlat.size
+            ds.rlon.size == ds.rlat.size
     ), "rlon and rlat not the same size, check dataset"
 
     return ds
@@ -189,7 +189,7 @@ def coarsen_lr(ds, scale_factor):
         Coarsened dataset.
     """
 
-    ds = ds.coarsen(rlon=scale_factor, rlat=scale_factor).mean()
+    ds = ds.coarsen(lon=scale_factor, lat=scale_factor).mean()
 
     return ds
 
@@ -234,7 +234,7 @@ def standardize(x, mean, std):
 
 
 def compute_standardization(
-    ds: xr.Dataset, var: str, precomputed: xr.Dataset = None
+        ds: xr.Dataset, var: str, precomputed: xr.Dataset = None
 ) -> xr.Dataset:  # sourcery skip: avoid-builtin-shadow
     """Standardize the statistics of the dataset.
 
@@ -259,7 +259,7 @@ def compute_standardization(
         mean = ds[var].mean().compute()
         logging.info("Calculation std...")
         std = ds[var].std().compute()
-    
+
     logging.info("Applying function...")
     ds[var] = xr.apply_ufunc(
         standardize,
@@ -299,6 +299,7 @@ def unit_change(x):
 
 def log_transform(x):
     return np.log10(x + 1)
+
 
 def maxnorm(x, max):
     return x / max

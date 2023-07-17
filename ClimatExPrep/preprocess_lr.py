@@ -69,13 +69,14 @@ def start(cfg) -> None:
             lr = regrid_align(lr, hr_ref)
 
             # Crop the field to the given size.
-            logging.info("Cropping field...")
-            lr = crop_field(lr, cfg.spatial.scale_factor, cfg.spatial.x, cfg.spatial.y)
-            lr = lr.drop(["lat", "lon"])
+            # logging.info("Cropping field...")
+            # lr = crop_field(lr, cfg.spatial.scale_factor, cfg.spatial.x, cfg.spatial.y)
+            # lr = lr.drop(["lat", "lon"])
 
             # Coarsen the low resolution dataset.
-            logging.info("Coarsening low resolution dataset...")
-            lr = coarsen_lr(lr, cfg.spatial.scale_factor)
+            if var != "MAPSTA":
+                logging.info("Coarsening low resolution dataset...")
+                lr = coarsen_lr(lr, cfg.spatial.scale_factor)
 
             if var == "pr":
                 logging.info("Changing units of lr...")
