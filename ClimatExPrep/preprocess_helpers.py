@@ -250,15 +250,15 @@ def compute_standardization(
         Dataset with standardized statistics.
     """
     logging.info("Computing mean and standard deviation...")
-    if precomputed is not None:
-        mean = precomputed[var].attrs["mean"]
-        std = precomputed[var].attrs["std"]
+    # if precomputed is not None:
+    #     mean = precomputed[var].attrs["mean"]
+    #     std = precomputed[var].attrs["std"]
 
-    else:
-        logging.info("Calculation mean...")
-        mean = ds[var].mean().compute()
-        logging.info("Calculation std...")
-        std = ds[var].std().compute()
+
+    logging.info("Calculation mean...")
+    mean = ds[var].mean().compute()
+    logging.info("Calculation std...")
+    std = ds[var].std().compute()
 
     logging.info("Applying function...")
     ds[var] = xr.apply_ufunc(
