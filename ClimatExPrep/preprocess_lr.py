@@ -64,9 +64,9 @@ def start(cfg) -> None:
             logging.info("Slicing time dimension...")
             lr = slice_time(lr, cfg.time.full.start, cfg.time.full.end)
 
-            # Regrid and align the dataset.
-            logging.info("Regridding and interpolating...")
-            lr = regrid_align(lr, hr_ref)
+            # # Regrid and align the dataset.
+            # logging.info("Regridding and interpolating...")
+            # lr = regrid_align(lr, hr_ref)
 
             # Crop the field to the given size.
             # logging.info("Cropping field...")

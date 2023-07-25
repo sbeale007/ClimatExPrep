@@ -18,34 +18,34 @@ vars:
     lr:
       path: /Volumes/LaCie/nonan/hs/*smallest.nc
       is_west_negative: false
-    output_path: /Users/susanbeale/Desktop/4yr_smallest/
+    output_path: /Volumes/LaCie/2yr_tester/
     alternative_names: ["hs","SWH"]
     standardize: true
     hr_only: true 
 
-  # uas:
-  #   hr:
-  #     path: /Volumes/LaCie/nonan/uas/*smallest.nc
-  #     is_west_negative: false
-  #   lr:
-  #     path: /Volumes/LaCie/nonan/uas/*smallest.nc
-  #     is_west_negative: false
-  #   output_path: /Users/susanbeale/Desktop/4yr_smallest/
-  #   alternative_names: ["U10", "u10", "uas","uwnd"]
-  #   standardize: true
-  #   lr_only: true
+  uas:
+    hr:
+      path: /Volumes/LaCie/nonan/uas/*smallest.nc
+      is_west_negative: false
+    lr:
+      path: /Volumes/LaCie/nonan/uas/*smallest.nc
+      is_west_negative: false
+    output_path: /Volumes/LaCie/2yr_tester/
+    alternative_names: ["U10", "u10", "uas","uwnd"]
+    standardize: true
+    lr_only: true
 
-  # vas:
-  #   hr:
-  #     path: /Volumes/LaCie/nonan/vas/*smallest.nc
-  #     is_west_negative: false
-  #   lr:
-  #     path: /Volumes/LaCie/nonan/vas/*smallest.nc
-  #     is_west_negative: false
-  #   output_path: /Users/susanbeale/Desktop/4yr_smallest/
-  #   alternative_names: ["V10", "v10", "vas","vwnd"]
-  #   standardize: true
-  #   lr_only: true
+  vas:
+    hr:
+      path: /Volumes/LaCie/nonan/vas/*smallest.nc
+      is_west_negative: false
+    lr:
+      path: /Volumes/LaCie/nonan/vas/*smallest.nc
+      is_west_negative: false
+    output_path: /Volumes/LaCie/2yr_tester/
+    alternative_names: ["V10", "v10", "vas","vwnd"]
+    standardize: true
+    lr_only: true
 
 #  ice:
 #    hr:
@@ -113,11 +113,11 @@ time:
   # this defines the full dataset from which to subset
   full:
     start: "19950101T00:00:00"
-    end: "19981231T21:00:00"
+    end: "19961231T21:00:00"
 
   # use this to select which years to reserve for testing
   # the remaining years in full will be used for training
-  test_years: [1997]
+  test_years: []
 
 # sets the scale factor and index slices of the rotated coordinates
 spatial:
@@ -130,7 +130,7 @@ spatial:
     last_index: 128
 
 # xarray netcdf engine
-engine: netcdf4
+engine: h5netcdf
 steps_per_file: 32
 randomize: true
 
