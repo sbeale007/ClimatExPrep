@@ -12,7 +12,6 @@ import dask
 
 from ClimatExPrep.preprocess_helpers import (
     load_grid,
-    regrid_align,
     slice_time,
     crop_field,
     coarsen_lr,
@@ -57,16 +56,12 @@ def start(cfg) -> None:
                 lr = homogenize_names(lr, config, key_attr)
                 hr_ref = homogenize_names(hr_ref, config, key_attr)
 
-            logging.info("Matching longitudes...")
-            lr = match_longitudes(lr) if cfg.vars[var].lr.is_west_negative else lr
-            hr_ref = match_longitudes(hr_ref)
+            # logging.info("Matching longitudes...")
+            # lr = match_longitudes(lr) if cfg.vars[var].lr.is_west_negative else lr
+            # hr_ref = match_longitudes(hr_ref)
 
             logging.info("Slicing time dimension...")
             lr = slice_time(lr, cfg.time.full.start, cfg.time.full.end)
-
-            # # Regrid and align the dataset.
-            # logging.info("Regridding and interpolating...")
-            # lr = regrid_align(lr, hr_ref)
 
             # Crop the field to the given size.
             # logging.info("Cropping field...")
@@ -78,18 +73,10 @@ def start(cfg) -> None:
                 logging.info("Coarsening low resolution dataset...")
                 lr = coarsen_lr(lr, cfg.spatial.scale_factor)
 
-            if var == "pr":
-                logging.info("Changing units of lr...")
-                # function to change units to mm/hr
-                lr[var] = xr.apply_ufunc(unit_change, lr[var], dask="parallelized")
-                logging.info("Apply log transform to lr...")
-                lr[var] = xr.apply_ufunc(log_transform, lr[var], dask="parallelized")
-                lr[var].attrs["units"] = "mm/h"
-                lr[var].attrs["transform"] = "log10(1+X)"
-
             # Train test split
             logging.info("Splitting dataset...")
             train_lr, test_lr = train_test_split(lr, cfg.time.test_years)
+            test_lr, val_lr = train_test_split(test_lr, cfg.time.validation_years)
 
             # Standardize the dataset.
             logging.info("Standardizing dataset...")
@@ -97,12 +84,15 @@ def start(cfg) -> None:
                 logging.info(f"Standardizing {var}...")
                 train_lr = compute_standardization(train_lr, var)
                 test_lr = compute_standardization(test_lr, var, train_lr)
+                val_lr  = compute_standardization(val_lr, var, train_lr)
 
             # Write the output to disk.
             logging.info("Writing test output...")
             write_to_zarr(test_lr, f"{cfg.vars[var].output_path}/{var}_test_lr")
             logging.info("Writing train output...")
             write_to_zarr(train_lr, f"{cfg.vars[var].output_path}/{var}_train_lr")
+            logging.info("Writing validation output...")
+            write_to_zarr(val_lr, f"{cfg.vars[var].output_path}/{var}_validation_lr")
 
             end = timer()
             logging.info("Done LR!")

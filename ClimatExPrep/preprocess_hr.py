@@ -12,7 +12,6 @@ import dask
 
 from ClimatExPrep.preprocess_helpers import (
     load_grid,
-    regrid_align,
     slice_time,
     crop_field,
     coarsen_lr,
@@ -55,33 +54,32 @@ def start(cfg) -> None:
                 hr = homogenize_names(hr, config, key_attr)
 
             # Check if keys are already in the dimensions
-            logging.info("Matching longitudes...")
-            hr = match_longitudes(hr) if cfg.vars[var].hr.is_west_negative else hr
+            # logging.info("Matching longitudes...")
+            # hr = match_longitudes(hr) if cfg.vars[var].hr.is_west_negative else hr
 
             # Slice the time dimension.
             logging.info("Slicing time dimension...")
             hr = slice_time(hr, cfg.time.full.start, cfg.time.full.end)
 
             # Crop the field to the given size.
-            # logging.info("Cropping field...")
-            # hr = crop_field(hr, cfg.spatial.scale_factor, cfg.spatial.x, cfg.spatial.y)
-            # hr = hr.drop(["lat", "lon"])
-
-            if var == "pr":
-                logging.info("Apply log transform to hr...")
-                hr[var] = xr.apply_ufunc(log_transform, hr[var], dask="parallelized")
-                hr[var].attrs["transform"] = "log10(1+X)"
+            if var in ["uas", "vas"]:
+                logging.info('Cropping %s field...' % var)
+                hr = crop_field(hr, cfg.spatial.scale_factor, cfg.spatial.x, cfg.spatial.y)
 
             # Train test split
             logging.info("Splitting dataset...")
             train_hr, test_hr = train_test_split(hr, cfg.time.test_years)
+            test_hr, val_hr = train_test_split(test_hr, cfg.time.validation_years)
 
             # Standardize the dataset.
             logging.info("Standardizing dataset...")
             if cfg.vars[var].standardize:
                 logging.info(f"Standardizing {var}...")
                 train_hr = compute_standardization(train_hr, var)
+                logging.info(f"Standardizing test {var}...")
                 test_hr = compute_standardization(test_hr, var, train_hr)
+                logging.info(f"Standardizing val {var}...")
+                val_hr = compute_standardization(val_hr, var, train_hr)
 
             # Write the output to disk.
             logging.info("Writing test output...")
@@ -91,6 +89,10 @@ def start(cfg) -> None:
             logging.info("Writing train output...")
             write_to_zarr(
                 train_hr, f"{cfg.vars[var].output_path}/{var}_train_hr", chunks=50
+            )
+            logging.info("Writing validation output...")
+            write_to_zarr(
+                val_hr, f"{cfg.vars[var].output_path}/{var}_validation_hr", chunks=50
             )
 
             end = timer()

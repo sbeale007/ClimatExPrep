@@ -8,51 +8,48 @@
 # dataset respectively with hr_only or lr_only: true
 # The same logic above applies for the dimensions, dims, and coordinates, coords.
 
-hr_grid_ref_path: "/Volumes/LaCie/nonan/hs/hs_nonan_199501_waves_r1i1p2f1_CanESM5orig_hist_smallest.nc"
+hr_grid_ref_path: "/Users/susanbeale/Desktop/susan_data/med_wind_small_hs/hs/hs_nonan_199501_waves_r1i1p2f1_CanESM5orig_hist_smallest.nc"
 
 vars:
   hs:
     hr:
-      path: /Volumes/LaCie/nonan/hs/*smallest.nc
+      path: /Users/susanbeale/Desktop/susan_data/med_wind_small_hs/hs/*smallest.nc
       is_west_negative: false
     lr:
-      path: /Volumes/LaCie/nonan/hs/*smallest.nc
+      path: /Users/susanbeale/Desktop/susan_data/med_wind_small_hs/hs/*smallest.nc
       is_west_negative: false
-    output_path: /Volumes/LaCie/2yr_tester/
+    output_path: /Users/susanbeale/Desktop/95_97_med_w_small_hs/
     alternative_names: ["hs","SWH"]
     standardize: true
-    hr_only: true 
 
   uas:
     hr:
-      path: /Volumes/LaCie/nonan/uas/*smallest.nc
+      path: /Users/susanbeale/Desktop/susan_data/med_wind_small_hs/uas/*mid.nc
       is_west_negative: false
     lr:
-      path: /Volumes/LaCie/nonan/uas/*smallest.nc
+      path: /Users/susanbeale/Desktop/susan_data/med_wind_small_hs/uas/*mid.nc
       is_west_negative: false
-    output_path: /Volumes/LaCie/2yr_tester/
+    output_path: /Users/susanbeale/Desktop/95_97_med_w_small_hs/
     alternative_names: ["U10", "u10", "uas","uwnd"]
     standardize: true
-    lr_only: true
 
   vas:
     hr:
-      path: /Volumes/LaCie/nonan/vas/*smallest.nc
+      path: /Users/susanbeale/Desktop/susan_data/med_wind_small_hs/vas/*mid.nc
       is_west_negative: false
     lr:
-      path: /Volumes/LaCie/nonan/vas/*smallest.nc
+      path: /Users/susanbeale/Desktop/susan_data/med_wind_small_hs/vas/*mid.nc
       is_west_negative: false
-    output_path: /Volumes/LaCie/2yr_tester/
+    output_path: /Users/susanbeale/Desktop/95_97_med_w_small_hs/
     alternative_names: ["V10", "v10", "vas","vwnd"]
     standardize: true
-    lr_only: true
 
 #  ice:
 #    hr:
-#      path: /Volumes/LaCie/nonan/ice/*smallest.nc
+#      path: /Users/susanbeale/Desktop/susan_data/ice/*smallest.nc
 #      is_west_negative: false
 #    lr:
-#      path: /Volumes/LaCie/nonan/ice/*smallest.nc
+#      path: /Users/susanbeale/Desktop/susan_data/ice/*smallest.nc
 #      is_west_negative: false
 #    output_path: /Volumes/LaCie/2year_coarsened_cropped/
 #    alternative_names: ["ice","SIC"]
@@ -60,10 +57,10 @@ vars:
 #
 #  t0m1:
 #    hr:
-#      path: /Volumes/LaCie/nonan/t0m1/*smallest.nc
+#      path: /Users/susanbeale/Desktop/susan_data/t0m1/*smallest.nc
 #      is_west_negative: false
 #    lr:
-#      path: /Volumes/LaCie/nonan/t0m1/*smallest.nc
+#      path: /Users/susanbeale/Desktop/susan_data/t0m1/*smallest.nc
 #      is_west_negative: false
 #    output_path: /Volumes/LaCie/2year_coarsened_cropped/
 #    alternative_names: ["t0m1"]
@@ -71,10 +68,10 @@ vars:
 #
 #  dir:
 #    hr:
-#      path: /Volumes/LaCie/nonan/dir/*smallest.nc
+#      path: /Users/susanbeale/Desktop/susan_data/dir/*smallest.nc
 #      is_west_negative: false
 #    lr:
-#      path: /Volumes/LaCie/nonan/dir/*smallest.nc
+#      path: /Users/susanbeale/Desktop/susan_data/dir/*smallest.nc
 #      is_west_negative: false
 #    output_path: /Volumes/LaCie/2year_coarsened_cropped/
 #    alternative_names: ["dir"]
@@ -83,10 +80,10 @@ vars:
 
   # MAPSTA:
   #   hr:
-  #     path: /Volumes/LaCie/nonan/MAPSTA/*small3.nc
+  #     path: /Users/susanbeale/Desktop/susan_data/MAPSTA/*small3.nc
   #     is_west_negative: false
   #   lr:
-  #     path: /Volumes/LaCie/nonan/MAPSTA/*small3.nc
+  #     path: /Users/susanbeale/Desktop/susan_data/MAPSTA/*small3.nc
   #     is_west_negative: false
   #   output_path: /Volumes/LaCie/2years_smallest_coarsened_southatlantic/
   #   alternative_names: ["MAPSTA"]
@@ -113,21 +110,23 @@ time:
   # this defines the full dataset from which to subset
   full:
     start: "19950101T00:00:00"
-    end: "19961231T21:00:00"
+    end: "19971231T21:00:00"
 
-  # use this to select which years to reserve for testing
+  # use this to select which years to reserve for testing and validation
   # the remaining years in full will be used for training
-  test_years: []
+  # include validation years in test years they are separated during preprocessing
+  test_years: [1996,1997]
+  validation_years: [1997]
 
 # sets the scale factor and index slices of the rotated coordinates
 spatial:
-  scale_factor: 8
+  scale_factor: 16
   x:
-    first_index: 0
-    last_index: 128
+    first_index: 64
+    last_index: 192
   y:
-    first_index: 0
-    last_index: 128
+    first_index: 64
+    last_index: 192
 
 # xarray netcdf engine
 engine: h5netcdf

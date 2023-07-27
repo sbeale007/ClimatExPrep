@@ -16,31 +16,30 @@ def main(cfg) -> None:
     # format.
     for res in ["hr"]:
         start = timer()
-        for s in ["train", "test"]:
+        for s in ["train", "test", "validation"]:
             logging.info(f"Loading {s} {res} dataset...")
             for var in cfg.vars:
-                if var=='hs':
-                    output_path = cfg.vars[var].output_path
-                    with xr.open_zarr(f"{output_path}/{var}_{s}_{res}.zarr/", chunks={"time": 1000}) as ds:
-                    # Create parent dir if it doesn't exist for each variable
-                        if not os.path.exists(f"{output_path}/{s}/{var}/{res}"):
-                            logging.info(
-                                f"Creating directory: {output_path}/{s}/{var}/{res}"
-                            )
-                            os.makedirs(f"{output_path}/{s}/{var}/{res}")
+                output_path = cfg.vars[var].output_path
+                with xr.open_zarr(f"{output_path}/{var}_{s}_{res}.zarr/", chunks={"time": 1000}) as ds:
+                # Create parent dir if it doesn't exist for each variable
+                    if not os.path.exists(f"{output_path}/{s}/{var}/{res}"):
+                        logging.info(
+                            f"Creating directory: {output_path}/{s}/{var}/{res}"
+                        )
+                        os.makedirs(f"{output_path}/{s}/{var}/{res}")
 
-                        logging.info(f"Saving {s} {res} {var} to torch tensors...")
-                        logging.info(f"Writing to {output_path}/{s}/{var}/{res}")
-                        for i in tqdm(np.arange(ds.time.size), desc=f"{s} {res} {var}"):
-                            arr = ds[var].transpose("time", "lat", "lon")[i, ...].values
-                            x = torch.tensor(np.array(arr))
-                            assert not torch.isnan(x).any(), f"NaNs found in {s} {res} {var} {i}"
-                            torch.save(x, f"{output_path}/{s}/{var}/{res}/{var}_{i}.pt")
+                    logging.info(f"Saving {s} {res} {var} to torch tensors...")
+                    logging.info(f"Writing to {output_path}/{s}/{var}/{res}")
+                    for i in tqdm(np.arange(ds.time.size), desc=f"{s} {res} {var}"):
+                        arr = ds[var].transpose("time", "lat", "lon")[i, ...].values
+                        x = torch.tensor(np.array(arr))
+                        assert not torch.isnan(x).any(), f"NaNs found in {s} {res} {var} {i}"
+                        torch.save(x, f"{output_path}/{s}/{var}/{res}/{var}_{i}.pt")
             end = timer()
             logging.info(f"Finished {res} dataset in {timedelta(seconds=end-start)}")
     for res in ["lr"]:
         start = timer()
-        for s in ["train", "test"]:
+        for s in ["train", "test", "validation"]:
             logging.info(f"Loading {s} {res} dataset...")
             for var in ["uas", "vas"]:
                 output_path = cfg.vars[var].output_path
@@ -64,5 +63,5 @@ def main(cfg) -> None:
 
 if __name__ == "__main__":
     logging.basicConfig(level=os.environ.get("LOGLEVEL", "INFO"))
-    with Client(n_workers=8, threads_per_worker=2, processes=False, dashboard_address=8787, memory_limit='4GB'):
+    with Client(n_workers=16, threads_per_worker=2, processes=False, dashboard_address=8787, memory_limit='4GB'):
         main()

@@ -150,13 +150,13 @@ def crop_field(ds, scale_factor, x, y):
     ds : xarray.Dataset
         Cropped dataset.
     """
-    assert "rlon" in ds.dims, "rlon not in dims, check dataset"
-    assert "rlat" in ds.dims, "rlat not in dims, check dataset"
+    assert "lon" in ds.dims, "lon not in dims, check dataset"
+    assert "lat" in ds.dims, "lat not in dims, check dataset"
 
     ds = ds.isel(
-        rlon=slice(x.first_index, x.last_index),
-        rlat=slice(y.first_index, y.last_index),
-        drop=True,
+        lon=slice(x.first_index, x.last_index),
+        lat=slice(y.first_index, y.last_index),
+        drop=False,
     )
 
     assert (
@@ -167,8 +167,8 @@ def crop_field(ds, scale_factor, x, y):
            ) % scale_factor == 0, "y dimension not divisible by scale factor, check config"
 
     assert (
-            ds.rlon.size == ds.rlat.size
-    ), "rlon and rlat not the same size, check dataset"
+            ds.lon.size == ds.lat.size
+    ), "lon and lat not the same size, check dataset"
 
     return ds
 
