@@ -8,39 +8,51 @@
 # dataset respectively with hr_only or lr_only: true
 # The same logic above applies for the dimensions, dims, and coordinates, coords.
 
-hr_grid_ref_path: "/Users/susanbeale/Desktop/susan_data/med_wind_small_hs/hs/hs_nonan_199501_waves_r1i1p2f1_CanESM5orig_hist_smallest.nc"
+hr_grid_ref_path: "/Volumes/LaCie/nonan/hs/hs_nonan_199501_waves_r1i1p2f1_CanESM5orig_hist_smallest.nc"
 
 vars:
   hs:
+    hr_only: true
     hr:
-      path: /Users/susanbeale/Desktop/susan_data/med_wind_small_hs/hs/*smallest.nc
+      path: /Volumes/LaCie/nonan/hs/*smallest.nc
       is_west_negative: false
-    lr:
-      path: /Users/susanbeale/Desktop/susan_data/med_wind_small_hs/hs/*smallest.nc
+    lr_small:
+      path: /Volumes/LaCie/nonan/hs/*smallest.nc
       is_west_negative: false
-    output_path: /Users/susanbeale/Desktop/95_97_med_w_small_hs/
+    lr_big: 
+      path: /Volumes/LaCie/nonan/hs/*mid.nc
+      is_west_negative: false
+    output_path: /Users/susanbeale/Desktop/big_and_small_input/
     alternative_names: ["hs","SWH"]
     standardize: true
 
   uas:
+    lr_only: true
     hr:
-      path: /Users/susanbeale/Desktop/susan_data/med_wind_small_hs/uas/*mid.nc
+      path: /Volumes/LaCie/nonan/uas/*mid.nc
       is_west_negative: false
-    lr:
-      path: /Users/susanbeale/Desktop/susan_data/med_wind_small_hs/uas/*mid.nc
+    lr_small:
+      path: /Volumes/LaCie/nonan/uas/*smallest.nc
       is_west_negative: false
-    output_path: /Users/susanbeale/Desktop/95_97_med_w_small_hs/
+    lr_big: 
+      path: /Volumes/LaCie/nonan/uas/*mid.nc
+      is_west_negative: false
+    output_path: /Users/susanbeale/Desktop/big_and_small_input/
     alternative_names: ["U10", "u10", "uas","uwnd"]
     standardize: true
 
   vas:
+    lr_only: true
     hr:
-      path: /Users/susanbeale/Desktop/susan_data/med_wind_small_hs/vas/*mid.nc
+      path: /Volumes/LaCie/nonan/vas/*mid.nc
       is_west_negative: false
-    lr:
-      path: /Users/susanbeale/Desktop/susan_data/med_wind_small_hs/vas/*mid.nc
+    lr_small:
+      path: /Volumes/LaCie/nonan/vas/*smallest.nc
       is_west_negative: false
-    output_path: /Users/susanbeale/Desktop/95_97_med_w_small_hs/
+    lr_big: 
+      path: /Volumes/LaCie/nonan/vas/*mid.nc
+      is_west_negative: false
+    output_path: /Users/susanbeale/Desktop/big_and_small_input/
     alternative_names: ["V10", "v10", "vas","vwnd"]
     standardize: true
 
@@ -110,23 +122,30 @@ time:
   # this defines the full dataset from which to subset
   full:
     start: "19950101T00:00:00"
-    end: "19971231T21:00:00"
+    end: "19961231T21:00:00"
 
   # use this to select which years to reserve for testing and validation
   # the remaining years in full will be used for training
   # include validation years in test years they are separated during preprocessing
-  test_years: [1996,1997]
-  validation_years: [1997]
+  test_years: []
+  validation_years: []
 
 # sets the scale factor and index slices of the rotated coordinates
 spatial:
-  scale_factor: 16
-  x:
+  scale_factor_small: 8
+  scale_factor_big: 16
+  x_big:
     first_index: 64
     last_index: 192
-  y:
+  y_big:
     first_index: 64
     last_index: 192
+  x_small:
+    first_index: 0
+    last_index: 128
+  y_small:
+    first_index: 0
+    last_index: 128
 
 # xarray netcdf engine
 engine: h5netcdf

@@ -62,9 +62,9 @@ def start(cfg) -> None:
             hr = slice_time(hr, cfg.time.full.start, cfg.time.full.end)
 
             # Crop the field to the given size.
-            if var in ["uas", "vas"]:
-                logging.info('Cropping %s field...' % var)
-                hr = crop_field(hr, cfg.spatial.scale_factor, cfg.spatial.x, cfg.spatial.y)
+            # if var in ["uas", "vas"]:
+            #     logging.info('Cropping %s field...' % var)
+            #     hr = crop_field(hr, cfg.spatial.scale_factor, cfg.spatial.x, cfg.spatial.y)
 
             # Train test split
             logging.info("Splitting dataset...")
