@@ -1,0 +1,37 @@
+nohup: ClimatExPrep/remove_nan.py: Permission denied
+opening dataset /Volumes/LaCie/historical/200601_waves_r1i1p2f1_CanESM5orig_hist.nc
+creating new datasets with only needed variable
+averaging and removing nan for: hs
+averaging and removing nan for: uwnd
+averaging and removing nan for: vwnd
+averaging and removing nan for: ice
+averaging and removing nan for: t0m1
+averaging and removing nan for: dir
+averaging and removing nan for: fp
+saving to  /Volumes/LaCie/nonan/hs/hs_nonan_200601_waves_r1i1p2f1_CanESM5orig_hist.nc
+finished saving
+saving to  /Volumes/LaCie/nonan/vas/vas_nonan_200601_waves_r1i1p2f1_CanESM5orig_hist.nc
+finished saving
+saving to  /Volumes/LaCie/nonan/uas/uas_nonan_200601_waves_r1i1p2f1_CanESM5orig_hist.nc
+finished saving
+saving to  /Volumes/LaCie/nonan/ice/ice_nonan_200601_waves_r1i1p2f1_CanESM5orig_hist.nc
+finished saving
+saving to  /Volumes/LaCie/nonan/t0m1/t0m1_nonan_200601_waves_r1i1p2f1_CanESM5orig_hist.nc
+Traceback (most recent call last):
+  File "/Users/susanbeale/Desktop/ClimatExPrep/ClimatExPrep/remove_nan.py", line 91, in <module>
+    d.load().to_netcdf(path=f)
+  File "/Users/susanbeale/anaconda3/envs/testing/lib/python3.10/site-packages/xarray/core/dataset.py", line 1917, in to_netcdf
+    return to_netcdf(  # type: ignore  # mypy cannot resolve the overloads:(
+  File "/Users/susanbeale/anaconda3/envs/testing/lib/python3.10/site-packages/xarray/backends/api.py", line 1216, in to_netcdf
+    dump_to_store(
+  File "/Users/susanbeale/anaconda3/envs/testing/lib/python3.10/site-packages/xarray/backends/api.py", line 1263, in dump_to_store
+    store.store(variables, attrs, check_encoding, writer, unlimited_dims=unlimited_dims)
+  File "/Users/susanbeale/anaconda3/envs/testing/lib/python3.10/site-packages/xarray/backends/common.py", line 273, in store
+    self.set_variables(
+  File "/Users/susanbeale/anaconda3/envs/testing/lib/python3.10/site-packages/xarray/backends/common.py", line 315, in set_variables
+    writer.add(source, target)
+  File "/Users/susanbeale/anaconda3/envs/testing/lib/python3.10/site-packages/xarray/backends/common.py", line 164, in add
+    target[...] = source
+  File "/Users/susanbeale/anaconda3/envs/testing/lib/python3.10/site-packages/xarray/backends/netCDF4_.py", line 78, in __setitem__
+    if self.datastore.autoclose:
+KeyboardInterrupt

@@ -44,18 +44,18 @@ def start(cfg) -> None:
             # process lr data first
 
             logging.info(f"Loading {var} LR input dataset...")
-            lr_small_path_list = cfg.vars[var].lr_small.path
+            lr_path_list = cfg.vars[var].lr.path
             lr_big_path_list = cfg.vars[var].lr_big.path
             hr_grid_ref = cfg.hr_grid_ref_path
 
-            lr_small = load_grid(lr_small_path_list, cfg.engine, chunks=200)
+            lr = load_grid(lr_path_list, cfg.engine, chunks=200)
             lr_big = load_grid(lr_big_path_list, cfg.engine, chunks=200)
             hr_ref = load_grid(hr_grid_ref, cfg.engine)
 
             logging.info("Homogenizing dataset keys...")
             keys = {"data_vars": cfg.vars, "coords": cfg.coords, "dims": cfg.dims}
             for key_attr, config in keys.items():
-                lr_small = homogenize_names(lr_small, config, key_attr)
+                lr = homogenize_names(lr, config, key_attr)
                 lr_big = homogenize_names(lr_big, config, key_attr)
                 hr_ref = homogenize_names(hr_ref, config, key_attr)
 
@@ -64,7 +64,7 @@ def start(cfg) -> None:
             # hr_ref = match_longitudes(hr_ref)
 
             logging.info("Slicing time dimension...")
-            lr_small = slice_time(lr_small, cfg.time.full.start, cfg.time.full.end)
+            lr = slice_time(lr, cfg.time.full.start, cfg.time.full.end)
             lr_big = slice_time(lr_big, cfg.time.full.start, cfg.time.full.end)
 
             # Crop the field to the given size.
@@ -75,13 +75,13 @@ def start(cfg) -> None:
             # Coarsen the low resolution dataset.
             if var != "MAPSTA":
                 logging.info("Coarsening low resolution dataset...")
-                lr_small = coarsen_lr(lr_small, cfg.spatial.scale_factor_small)
+                lr = coarsen_lr(lr, cfg.spatial.scale_factor)
                 lr_big = coarsen_lr(lr_big, cfg.spatial.scale_factor_big)
 
             # Train test split
             logging.info("Splitting dataset...")
-            train_lr_small, test_lr_small = train_test_split(lr_small, cfg.time.test_years)
-            test_lr_small, val_lr_small = train_test_split(test_lr_small, cfg.time.validation_years)
+            train_lr, test_lr = train_test_split(lr, cfg.time.test_years)
+            test_lr, val_lr = train_test_split(test_lr, cfg.time.validation_years)
 
             train_lr_big, test_lr_big = train_test_split(lr_big, cfg.time.test_years)
             test_lr_big, val_lr_big = train_test_split(test_lr_big, cfg.time.validation_years)
@@ -90,21 +90,21 @@ def start(cfg) -> None:
             logging.info("Standardizing dataset...")
             if cfg.vars[var].standardize:
                 logging.info(f"Standardizing {var}...")
-                train_lr_small = compute_standardization(train_lr_small, var)
-                test_lr_small = compute_standardization(test_lr_small, var, train_lr_small)
-                val_lr_small  = compute_standardization(val_lr_small, var, train_lr_small)
+                train_lr = compute_standardization(train_lr, var)
+                test_lr = compute_standardization(test_lr, var, train_lr)
+                val_lr  = compute_standardization(val_lr, var, train_lr)
 
                 train_lr_big = compute_standardization(train_lr_big, var)
                 test_lr_big = compute_standardization(test_lr_big, var, train_lr_big)
                 val_lr_big  = compute_standardization(val_lr_big, var, train_lr_big)
 
             # Write the output to disk.
-            logging.info("Writing smaller test output...")
-            write_to_zarr(test_lr_small, f"{cfg.vars[var].output_path}/{var}_test_lr_small")
-            logging.info("Writing smaller train output...")
-            write_to_zarr(train_lr_small, f"{cfg.vars[var].output_path}/{var}_train_lr_small")
-            logging.info("Writing smaller validation output...")
-            write_to_zarr(val_lr_small, f"{cfg.vars[var].output_path}/{var}_validation_lr_small")
+            logging.info("Writing lr test output...")
+            write_to_zarr(test_lr, f"{cfg.vars[var].output_path}/{var}_test_lr")
+            logging.info("Writing lr train output...")
+            write_to_zarr(train_lr, f"{cfg.vars[var].output_path}/{var}_train_lr")
+            logging.info("Writing lr validation output...")
+            write_to_zarr(val_lr, f"{cfg.vars[var].output_path}/{var}_validation_lr")
 
             logging.info("Writing larger test output...")
             write_to_zarr(test_lr_big, f"{cfg.vars[var].output_path}/{var}_test_lr_big")

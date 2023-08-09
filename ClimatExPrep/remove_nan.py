@@ -53,10 +53,10 @@ for file in glob.glob("/Volumes/LaCie/historical/*hist.nc"):
     uas_only = select_var(ds, ['uwnd'])
     vas_only = select_var(ds, ['vwnd'])
     ice_only = select_var(ds, ['ice'])
-    t0m1_only = select_var(ds, ['t0m1'])
-    dir_only = select_var(ds, ['dir'])
-    fp_only = select_var(ds, ['fp'])
-    MAPSTA_only = select_var(ds, ['MAPSTA'])
+    # t0m1_only = select_var(ds, ['t0m1'])
+    # dir_only = select_var(ds, ['dir'])
+    # fp_only = select_var(ds, ['fp'])
+    # MAPSTA_only = select_var(ds, ['MAPSTA'])
 
     # removes all nan values from files
 
@@ -64,27 +64,26 @@ for file in glob.glob("/Volumes/LaCie/historical/*hist.nc"):
     remove_nan(uas_only, 'uwnd')
     remove_nan(vas_only, 'vwnd')
     remove_nan(ice_only, 'ice')
-    remove_nan(t0m1_only, 't0m1')
-    remove_nan(dir_only, 'dir')
-    remove_nan(fp_only, 'fp')
+    # remove_nan(t0m1_only, 't0m1')
+    # remove_nan(dir_only, 'dir')
+    # remove_nan(fp_only, 'fp')
 
     # duplicates MAPSTA variable for every time step
-    time_coord = MAPSTA_only.time
-    MAPSTA_drop_time = MAPSTA_only.drop("time")
-    MAPSTA_dup = MAPSTA_drop_time.expand_dims(time=time_coord)
+    # time_coord = MAPSTA_only.time
+    # MAPSTA_drop_time = MAPSTA_only.drop("time")
+    # MAPSTA_dup = MAPSTA_drop_time.expand_dims(time=time_coord)
 
     new_hs_filename = '/Volumes/LaCie/nonan/hs/hs_nonan_%s' % base
     new_uas_filename = '/Volumes/LaCie/nonan/uas/uas_nonan_%s' % base
     new_vas_filename = '/Volumes/LaCie/nonan/vas/vas_nonan_%s' % base
     new_ice_filename = '/Volumes/LaCie/nonan/ice/ice_nonan_%s' % base
-    new_t0m1_filename = '/Volumes/LaCie/nonan/t0m1/t0m1_nonan_%s' % base
-    new_dir_filename = '/Volumes/LaCie/nonan/dir/dir_nonan_%s' % base
-    new_fp_filename = '/Volumes/LaCie/nonan/fp/fp_nonan_%s' % base
-    new_MAPSTA_filename = '/Volumes/LaCie/nonan/MAPSTA/MAPSTA_nonan_%s' % base
+    # new_t0m1_filename = '/Volumes/LaCie/nonan/t0m1/t0m1_nonan_%s' % base
+    # new_dir_filename = '/Volumes/LaCie/nonan/dir/dir_nonan_%s' % base
+    # new_fp_filename = '/Volumes/LaCie/nonan/fp/fp_nonan_%s' % base
+    # new_MAPSTA_filename = '/Volumes/LaCie/nonan/MAPSTA/MAPSTA_nonan_%s' % base
 
-    filenames = [new_hs_filename, new_vas_filename, new_uas_filename, new_ice_filename, new_t0m1_filename,
-                 new_dir_filename, new_fp_filename, new_MAPSTA_filename]
-    new_ds = [hs_only, vas_only, uas_only, ice_only, t0m1_only, dir_only, fp_only, MAPSTA_dup]
+    filenames = [new_hs_filename, new_vas_filename, new_uas_filename, new_ice_filename]
+    new_ds = [hs_only, vas_only, uas_only, ice_only]
 
     for f, d in zip(filenames, new_ds):
         print('saving to ', f)

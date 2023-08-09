@@ -8,7 +8,7 @@
 # dataset respectively with hr_only or lr_only: true
 # The same logic above applies for the dimensions, dims, and coordinates, coords.
 
-hr_grid_ref_path: "/Volumes/LaCie/nonan/hs/hs_nonan_199501_waves_r1i1p2f1_CanESM5orig_hist_smallest.nc"
+hr_grid_ref_path: "/Volumes/LaCie/nonan/hs/hs_nonan_199501_waves_r1i1p2f1_CanESM5orig_hist_3hr_smallest.nc"
 
 vars:
   hs:
@@ -16,43 +16,43 @@ vars:
     hr:
       path: /Volumes/LaCie/nonan/hs/*smallest.nc
       is_west_negative: false
-    lr_small:
+    lr:
       path: /Volumes/LaCie/nonan/hs/*smallest.nc
       is_west_negative: false
     lr_big: 
       path: /Volumes/LaCie/nonan/hs/*mid.nc
       is_west_negative: false
-    output_path: /Users/susanbeale/Desktop/big_and_small_input/
+    output_path: /Volumes/LaCie/2year_big_small_w/
     alternative_names: ["hs","SWH"]
     standardize: true
 
   uas:
     lr_only: true
     hr:
-      path: /Volumes/LaCie/nonan/uas/*mid.nc
+      path: /Volumes/LaCie/nonan/uas/*smallest.nc
       is_west_negative: false
-    lr_small:
+    lr:
       path: /Volumes/LaCie/nonan/uas/*smallest.nc
       is_west_negative: false
     lr_big: 
       path: /Volumes/LaCie/nonan/uas/*mid.nc
       is_west_negative: false
-    output_path: /Users/susanbeale/Desktop/big_and_small_input/
+    output_path: /Volumes/LaCie/2year_big_small_w/
     alternative_names: ["U10", "u10", "uas","uwnd"]
     standardize: true
 
   vas:
     lr_only: true
     hr:
-      path: /Volumes/LaCie/nonan/vas/*mid.nc
+      path: /Volumes/LaCie/nonan/vas/*smallest.nc
       is_west_negative: false
-    lr_small:
+    lr:
       path: /Volumes/LaCie/nonan/vas/*smallest.nc
       is_west_negative: false
     lr_big: 
       path: /Volumes/LaCie/nonan/vas/*mid.nc
       is_west_negative: false
-    output_path: /Users/susanbeale/Desktop/big_and_small_input/
+    output_path: /Volumes/LaCie/2year_big_small_w/
     alternative_names: ["V10", "v10", "vas","vwnd"]
     standardize: true
 
@@ -90,16 +90,19 @@ vars:
 #    standardize: true
 #
 
-  # MAPSTA:
-  #   hr:
-  #     path: /Users/susanbeale/Desktop/susan_data/MAPSTA/*small3.nc
-  #     is_west_negative: false
-  #   lr:
-  #     path: /Users/susanbeale/Desktop/susan_data/MAPSTA/*small3.nc
-  #     is_west_negative: false
-  #   output_path: /Volumes/LaCie/2years_smallest_coarsened_southatlantic/
-  #   alternative_names: ["MAPSTA"]
-  #   standardize: true
+  MAPSTA:
+    hr:
+      path: /Volumes/LaCie/nonan/MAPSTA/*smallest.nc
+      is_west_negative: false
+    lr:
+      path: /Volumes/LaCie/nonan/MAPSTA/*smallest.nc
+      is_west_negative: false
+    lr_big: 
+      path: /Volumes/LaCie/nonan/MAPSTA/*mid.nc
+      is_west_negative: false
+    output_path: /Volumes/LaCie/2year_big_small_w/
+    alternative_names: ["MAPSTA"]
+    standardize: true
 
 dims:
   time:
@@ -132,7 +135,7 @@ time:
 
 # sets the scale factor and index slices of the rotated coordinates
 spatial:
-  scale_factor_small: 8
+  scale_factor: 8
   scale_factor_big: 16
   x_big:
     first_index: 64

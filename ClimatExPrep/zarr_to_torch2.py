@@ -37,7 +37,7 @@ def main(cfg) -> None:
                         torch.save(x, f"{output_path}/{s}/{var}/{res}/{var}_{i}.pt")
             end = timer()
             logging.info(f"Finished {res} dataset in {timedelta(seconds=end-start)}")
-    for res in ["lr_big", "lr_small"]:
+    for res in ["lr", "lr_big"]:
         start = timer()
         for s in ["train", "test", "validation"]:
             logging.info(f"Loading {s} {res} dataset...")
@@ -63,5 +63,5 @@ def main(cfg) -> None:
 
 if __name__ == "__main__":
     logging.basicConfig(level=os.environ.get("LOGLEVEL", "INFO"))
-    with Client(n_workers=16, threads_per_worker=2, processes=False, dashboard_address=8787, memory_limit='4GB'):
-        main()
+    # with Client(n_workers=16, threads_per_worker=2, processes=False, dashboard_address=8787, memory_limit='4GB'):
+    main()
